@@ -8,9 +8,9 @@ we need retrieve all **full-time "Data Engineer"** Positions listed on the websi
 (www.arbeitsagentur.de) and load them into Stepstone Database.
 
 ## Description
-The project includes creating and connecting to Stepstone Database (`connect_db.py` and `db.cfg`), collecting data and 
-storing them in JSON files (`collecting_data.py`), creating required tables (`create_tables.py`), extracting, 
-transforming, and loading data into Stepstone Database.
+The project includes creating and connecting to Stepstone Database (`connect_db.py` and `db.cfg`), collecting data by 
+utilizing jobsuche-api and storing them in JSON files (`collecting_data.py`), creating required tables 
+(`create_tables.py`), extracting, transforming, and loading data into Stepstone Database (`etl.py`).
 
 ## Database in Snowflake schema
 ![Snowflake_schema.PNG](Snowflake_schema.png "Stepstone Snowflake schema")
