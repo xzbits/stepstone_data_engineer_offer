@@ -161,11 +161,11 @@ def process_etl():
     conn, cursor = connect_db.get_db_connection(db_config_filepath='db.cfg', section='stepstone')
 
     process_data(cursor, conn,
-                 filepath=r'C:\Users\Hoa\Desktop\stepstone_assignment\job_offer_data',
+                 filepath=r'/job_offer_data',
                  func=process_job_offer)
 
     process_data(cursor, conn,
-                 filepath=r'C:\Users\Hoa\Desktop\stepstone_assignment\job_detail_data',
+                 filepath=r'/job_detail_data',
                  func=process_job_details)
 
     process_reference_tables(cursor, conn)

@@ -3,6 +3,7 @@ import base64
 import json
 import os
 import pathlib
+from connect_db import config_parser
 
 
 def make_subdir(path, dir_name):
@@ -17,17 +18,18 @@ def make_subdir(path, dir_name):
 
 def get_jwt():
     """fetch the jwt token object"""
+    param_dict = config_parser('oauth.cfg', 'jwt')
     headers = {
-        'User-Agent': 'Jobsuche/2.9.2 (de.arbeitsagentur.jobboerse; build:1077; iOS 15.1.0) Alamofire/5.4.4',
-        'Host': 'rest.arbeitsagentur.de',
-        'Connection': 'keep-alive',
-        'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+        'User-Agent': param_dict['user_agent'],
+        'Host': param_dict['host'],
+        'Connection': param_dict['connection'],
+        'Content-Type': param_dict['content_type'],
     }
 
     data = {
-      'client_id': 'c003a37f-024f-462a-b36d-b001be4cd24a',
-      'client_secret': '32a39620-32b3-4307-9aa1-511e3d7f48a8',
-      'grant_type': 'client_credentials'
+      'client_id': param_dict['client_id'],
+      'client_secret': param_dict['client_secret'],
+      'grant_type': param_dict['grant_type']
     }
 
     response = requests.post('https://rest.arbeitsagentur.de/oauth/gettoken_cc',
@@ -40,6 +42,7 @@ def get_jwt():
 
 def search(jwt, what, page):
     """search for jobs. params can be found here: https://jobsuche.api.bund.dev/"""
+    param_dict = config_parser('oauth.cfg', 'job_offer')
     params = (
         ('arbeitszeit', 'vz'),
         ('page', str(page)),
@@ -48,24 +51,23 @@ def search(jwt, what, page):
     )
 
     headers = {
-        'User-Agent': 'Jobsuche/2.9.2 (de.arbeitsagentur.jobboerse; build:1077; iOS 15.1.0) Alamofire/5.4.4',
-        'Host': 'rest.arbeitsagentur.de',
+        'User-Agent': param_dict['user_agent'],
+        'Host': param_dict['host'],
         'OAuthAccessToken': jwt,
-        'Connection': 'keep-alive',
+        'Connection': param_dict['connection'],
     }
 
-    response = requests.get('https://rest.arbeitsagentur.de/jobboerse/jobsuche-service/pc/v4/app/jobs',
-                            headers=headers, params=params, verify=False)
+    response = requests.get(param_dict['api_url'], headers=headers, params=params, verify=False)
     return response.json()
 
 
 def job_details(jwt, job_ref):
-
+    param_dict = config_parser('oauth.cfg', 'job_detail')
     headers = {
-        'User-Agent': 'Jobsuche/2.9.3 (de.arbeitsagentur.jobboerse; build:1078; iOS 15.1.0) Alamofire/5.4.4',
-        'Host': 'rest.arbeitsagentur.de',
+        'User-Agent': param_dict['user_agent'],
+        'Host': param_dict['host'],
         'OAuthAccessToken': jwt,
-        'Connection': 'keep-alive',
+        'Connection': param_dict['connection'],
     }
 
     response = requests.get(
