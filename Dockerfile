@@ -1,10 +1,10 @@
 FROM python:3.8.14-slim
 
 WORKDIR /app
-COPY . /app
+COPY src/ /app/src/
 
 RUN pip install -r requirements.txt
 
-CMD ["python", "wrangling_data.py"]
-CMD ["python", "create_tables.py"]
-CMD ["python", "etl.py"]
+CMD ["python", "src/wrangling_data.py"]
+CMD ["python", "src/create_tables.py"]
+CMD ["python", "src/etl.py"]
