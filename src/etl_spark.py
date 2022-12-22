@@ -18,7 +18,7 @@ def create_spark_session():
     return spark
 
 
-def load_table_to_db(spark_df, table_name, db_config):
+def load_df_to_db(spark_df, table_name, db_config):
     """
     Load data from spark df to postgres db
 
@@ -74,7 +74,7 @@ def process_job_offer(spark_obj, input_data, db_config):
         .dropDuplicates(['refnr'])
 
     # Load job offer data into postgres DB
-    load_table_to_db(stellenangebote_data, 'stellenangebote', db_config)
+    load_df_to_db(stellenangebote_data, 'stellenangebote', db_config)
 
     # Get time records
     time_data = job_offer_data.select(['parsed_modifikationsTimestamp',
@@ -86,7 +86,7 @@ def process_job_offer(spark_obj, input_data, db_config):
                                        dayofweek('parsed_modifikationsTimestamp').alias('weekday')]).dropDuplicates()
 
     # Load time data into postgres db
-    load_table_to_db(time_data, 'zeit', db_config)
+    load_df_to_db(time_data, 'zeit', db_config)
 
 
 def process_job_details(spark_obj, input_data, db_config):
@@ -116,7 +116,7 @@ def process_job_details(spark_obj, input_data, db_config):
         .dropDuplicates(['refnr'])
 
     # Load job detail data into postgres db
-    load_table_to_db(auftragsdetails_data, 'auftragsdetails', db_config)
+    load_df_to_db(auftragsdetails_data, 'auftragsdetails', db_config)
 
     # Get company info records
     arbeitgeber_data = job_detail_data\
@@ -137,7 +137,7 @@ def process_job_details(spark_obj, input_data, db_config):
         .dropDuplicates(['arbeitgeber', 'branchengruppe'])
 
     # Load company info data into postgres db
-    load_table_to_db(arbeitgeber_data, 'arbeitgeber', db_config)
+    load_df_to_db(arbeitgeber_data, 'arbeitgeber', db_config)
 
     # Get workplace address records
     arbeitort_data = job_detail_data\
@@ -155,7 +155,7 @@ def process_job_details(spark_obj, input_data, db_config):
         .withColumn('arbeitort_id', monotonically_increasing_id())
 
     # Load workplace address data into postgres db
-    load_table_to_db(arbeitort_data, 'arbeitort', db_config)
+    load_df_to_db(arbeitort_data, 'arbeitort', db_config)
 
 
 def process_reference_tables(db_cursor, conn):
