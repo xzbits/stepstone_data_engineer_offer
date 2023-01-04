@@ -10,13 +10,13 @@ we need retrieve all **full-time "Data Engineer"** Positions listed on the websi
 ## Description
 The project includes creating and connecting to Stepstone Database (`connect_db.py` and `db.cfg`), collecting data by 
 utilizing jobsuche-api and storing them in JSON files (`collecting_data.py`), creating required tables 
-(`create_tables.py`), extracting, transforming, and loading data into Stepstone Database (`etl.py`).
+(`create_tables.py`), extracting, transforming, and loading data into Stepstone Database (`etl.py` or `etl_spark.py`).
 
 ## Database in Snowflake schema
 ![Snowflake_schema.PNG](Snowflake_schema.png "Stepstone Snowflake schema")
 
 # How to run
-## Step 1: Clarify Stepstone Database configuration
+## Step 1: Clarify Stepstone Database and JAR file path for JDBC driver configuration
 ```buildoutcfg
 [stepstone]
 host = 
@@ -29,6 +29,9 @@ host = localhost
 dbname = postgres
 user = postgres
 password = 
+
+[spark_config]
+postgres_jar = 
 ```
 
 ## Step 2: Build image with Dockerfile
