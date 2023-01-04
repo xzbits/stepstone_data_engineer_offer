@@ -15,6 +15,9 @@ utilizing jobsuche-api and storing them in JSON files (`collecting_data.py`), cr
 ## Database in Snowflake schema
 ![Snowflake_schema.PNG](Snowflake_schema.png "Stepstone Snowflake schema")
 
+## Platform Architecture
+![prj_arch.PNG](prj_arch.png "Stepstone platform architecture")
+
 # How to run
 ## Step 1: Clarify Stepstone Database and JAR file path for JDBC driver configuration
 ```buildoutcfg
