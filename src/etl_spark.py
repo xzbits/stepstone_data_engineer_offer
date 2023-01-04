@@ -6,14 +6,16 @@ import connect_db
 import os
 
 
-def create_spark_session():
+def create_spark_session(spark_config):
     """
     Create Spark session
+
+    * Note: Setup postgresql jar for Spark session for using Spark to interact with Postgres DB
     :return: SparkSession object
     """
     spark = SparkSession.builder\
         .appName("Enriching StepStone database with Data Engineer offers")\
-        .config('spark.jars', r'C:\Program Files\Java\jdbc-42.5.1-jar\postgresql-42.5.1.jar')\
+        .config('spark.jars', spark_config['postgres_jar'])\
         .getOrCreate()
     return spark
 
@@ -175,8 +177,10 @@ def process_reference_tables(db_cursor, conn):
 def process_etl():
     # Setup parameters
     stepstone_db_config = connect_db.config_parser(config_filepath='db.cfg', section='stepstone')
+    spark_config = connect_db.config_parser(config_filepath='db.cfg', section='spark_config')
+
     conn, cursor = connect_db.get_db_connection(db_config_filepath='db.cfg', section='stepstone')
-    spark = create_spark_session()
+    spark = create_spark_session(spark_config)
 
     process_job_offer(spark, 'job_offer_data', stepstone_db_config)
     process_job_details(spark, 'job_detail_data', stepstone_db_config)

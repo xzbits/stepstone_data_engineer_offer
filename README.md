@@ -46,5 +46,8 @@ docker run stepstone
 ```commandline
 python collecting_data.py
 python create_tables.py
-python etl.py
+
+python etl.py 
+or 
+python etl_spark.py
 ```
